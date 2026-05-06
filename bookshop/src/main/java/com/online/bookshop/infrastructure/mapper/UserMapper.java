@@ -18,7 +18,9 @@ public class UserMapper {
         domain.setUsername(entity.getUsername());
         domain.setPassword(entity.getPassword());
         domain.setRegistrationDate(entity.getRegistrationDate());
-        domain.setPersonId(entity.getPerson().getId());
+        if (entity.getPerson() != null) {
+            domain.setPersonId(entity.getPerson().getId());
+        }
 
         domain.setOrders(
                 entity.getOrders()
@@ -40,13 +42,15 @@ public class UserMapper {
     public static UserEntity toEntity(User domain) {
         if (domain == null) return null;
         UserEntity entity = new UserEntity();
-        if (domain.getId() != 0) entity.setId(domain.getId());
+        if (domain.getId() != null) entity.setId(domain.getId());
         entity.setStatus(domain.getStatus());
         entity.setEmail(domain.getEmail());
         entity.setUsername(domain.getUsername());
         entity.setPassword(domain.getPassword());
         entity.setRegistrationDate(domain.getRegistrationDate());
-        entity.setPerson(PersonMapper.ref(domain.getPersonId()));
+        if (domain.getPersonId() != null) {
+            entity.setPerson(PersonMapper.ref(domain.getPersonId()));
+        }
         entity.setOrders(
                 domain.getOrders()
                         .stream()

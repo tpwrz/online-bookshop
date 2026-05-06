@@ -43,10 +43,8 @@ public class UserEntity {
     @Column(name = "username", length = 50, nullable = false)
     private String username;
 
+    @Getter
     @Setter
-    @NotBlank
-    @Size(min = 8, max = 64)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,64}$", message = "Password must be 8–64 characters, include uppercase, lowercase, digit, and special character.")
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -94,10 +92,6 @@ public class UserEntity {
             throw new IllegalArgumentException("Invalid username format.");
         }
         this.username = username;
-    }
-
-    public @NotBlank @Size(min = 8, max = 64) @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,64}$", message = "Password must be 8–64 characters, include uppercase, lowercase, digit, and special character.") String getPassword() {
-        return password;
     }
 
 }

@@ -41,7 +41,7 @@ public class OrderMapper {
                         .stream()
                         .map(item -> {
                             OrderItemEntity itemEntity = OrderItemMapper.toEntity(item);
-                            itemEntity.setOrder(entity); // <-- set the order entity here
+                            itemEntity.setOrder(entity);
                             return itemEntity;
                         })
                         .collect(Collectors.toList())
