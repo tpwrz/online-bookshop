@@ -64,6 +64,8 @@ public class JwtService {
             log.warn("JWT malformed: {}", e.getMessage());
         } catch (IllegalArgumentException e) {
             log.warn("JWT claims empty: {}", e.getMessage());
+        } catch (JwtException e) {
+            log.warn("JWT exception: {}", e.getMessage());
         }
         return false;
     }
