@@ -42,8 +42,6 @@ class BookControllerTest {
         book.setPrice(14.99);
     }
 
-    // ---------------------------------------------------------------- getAll
-
     @Nested
     @DisplayName("GET /books")
     class GetAll {
@@ -69,8 +67,6 @@ class BookControllerTest {
         }
     }
 
-    // --------------------------------------------------------------- getById
-
     @Nested
     @DisplayName("GET /books/{id}")
     class GetById {
@@ -95,8 +91,6 @@ class BookControllerTest {
         }
     }
 
-    // ---------------------------------------------------------------- create
-
     @Nested
     @DisplayName("POST /books")
     class Create {
@@ -115,8 +109,6 @@ class BookControllerTest {
             assertThat(response.getBody().getId()).isEqualTo(1L);
         }
     }
-
-    // ---------------------------------------------------------------- update
 
     @Nested
     @DisplayName("PUT /books/{id}")
@@ -148,8 +140,6 @@ class BookControllerTest {
         }
     }
 
-    // ---------------------------------------------------------------- delete
-
     @Nested
     @DisplayName("DELETE /books/{id}")
     class Delete {
@@ -166,8 +156,6 @@ class BookControllerTest {
         }
     }
 
-    // ---------------------------------------------------------------- count
-
     @Nested
     @DisplayName("GET /books/count")
     class Count {
@@ -183,8 +171,6 @@ class BookControllerTest {
             assertThat(response.getBody()).isEqualTo(42);
         }
     }
-
-    // --------------------------------------------------------------- byGenre
 
     @Nested
     @DisplayName("GET /books/byGenre")
@@ -210,8 +196,6 @@ class BookControllerTest {
         }
     }
 
-    // -------------------------------------------------------------- byAuthor
-
     @Nested
     @DisplayName("GET /books/byAuthor")
     class ByAuthor {
@@ -228,8 +212,6 @@ class BookControllerTest {
         }
     }
 
-    // ---------------------------------------------------------------- byYear
-
     @Nested
     @DisplayName("GET /books/byYear")
     class ByYear {
@@ -245,8 +227,6 @@ class BookControllerTest {
             assertThat(response.getBody()).hasSize(1);
         }
     }
-
-    // ---------------------------------------------------------------- search
 
     @Nested
     @DisplayName("GET /books/search")
@@ -272,8 +252,6 @@ class BookControllerTest {
         }
     }
 
-    // --------------------------------------------------------- sortedByPrice
-
     @Nested
     @DisplayName("GET /books/sortedByPrice")
     class SortedByPrice {
@@ -292,8 +270,6 @@ class BookControllerTest {
             assertThat(response.getBody().get(0).getPrice()).isEqualTo(5.99);
         }
     }
-
-    // --------------------------------------------------------------- reviews
 
     @Nested
     @DisplayName("GET /books/{id}/reviews")
@@ -321,8 +297,6 @@ class BookControllerTest {
         }
     }
 
-    // -------------------------------------------------------- averageRating
-
     @Nested
     @DisplayName("GET /books/{id}/averageRating")
     class AverageRating {
@@ -347,8 +321,6 @@ class BookControllerTest {
         }
     }
 
-    // ------------------------------------------------- sortedByAverageRating
-
     @Nested
     @DisplayName("GET /books/sortedByAverageRating")
     class SortedByAverageRating {
@@ -364,8 +336,6 @@ class BookControllerTest {
             assertThat(response.getBody()).hasSize(1);
         }
     }
-
-    // ---------------------------------------------------- reviewsByRating
 
     @Nested
     @DisplayName("GET /books/{id}/reviewsByRating")

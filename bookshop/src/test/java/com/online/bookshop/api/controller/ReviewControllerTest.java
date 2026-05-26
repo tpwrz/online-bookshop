@@ -36,8 +36,6 @@ class ReviewControllerTest {
         review = new Review(1L, 1L, 1L, "Great book!", 5);
     }
 
-    // ---------------------------------------------------------------- getAll
-
     @Nested
     @DisplayName("GET /reviews")
     class GetAll {
@@ -66,8 +64,6 @@ class ReviewControllerTest {
         }
     }
 
-    // --------------------------------------------------------------- getById
-
     @Nested
     @DisplayName("GET /reviews/{id}")
     class GetById {
@@ -94,8 +90,6 @@ class ReviewControllerTest {
         }
     }
 
-    // ---------------------------------------------------------------- create
-
     @Nested
     @DisplayName("POST /reviews")
     class Create {
@@ -113,8 +107,6 @@ class ReviewControllerTest {
             verify(reviewService).save(input);
         }
     }
-
-    // ---------------------------------------------------------------- update
 
     @Nested
     @DisplayName("PUT /reviews/{id}")
@@ -135,8 +127,6 @@ class ReviewControllerTest {
         }
     }
 
-    // ---------------------------------------------------------------- delete
-
     @Nested
     @DisplayName("DELETE /reviews/{id}")
     class Delete {
@@ -152,8 +142,6 @@ class ReviewControllerTest {
             verify(reviewService).deleteById(1L);
         }
     }
-
-    // ------------------------------------------------------------ byBook
 
     @Nested
     @DisplayName("GET /reviews/byBook/{bookId}")
@@ -181,8 +169,6 @@ class ReviewControllerTest {
             assertThat(response.getBody()).isEmpty();
         }
     }
-
-    // ------------------------------------------------------------ byUser
 
     @Nested
     @DisplayName("GET /reviews/byUser/{userId}")

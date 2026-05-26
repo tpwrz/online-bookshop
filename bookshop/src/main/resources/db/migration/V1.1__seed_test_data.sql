@@ -20,14 +20,32 @@ FROM (VALUES ('John', 'A', 'Doe', '123 Main St', '111-222-333', DATE '1980-01-01
 WHERE NOT EXISTS (SELECT 1 FROM persons);
 
 -- USERS
-INSERT INTO users (status, email, registration_date, person_id, username, password)
-SELECT 'ACTIVE', 'john@example.com', CURRENT_DATE, p.id, 'john_doe', 'Password1!'
+ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS role VARCHAR(20) NOT NULL DEFAULT 'USER';
+-- Insert admin person
+INSERT INTO persons (first_name, middle_name, last_name, address, telephone_number, birth_date)
+SELECT 'Admin', NULL, 'Bookshop', 'Admin St 1', '000-000-000', DATE '1990-01-01'
+WHERE NOT EXISTS (SELECT 1 FROM persons WHERE last_name = 'Bookshop');
+-- Insert admin user (password: Admin1234! BCrypt cost 12)
+INSERT INTO users (status, email, registration_date, person_id, username, password, role)
+SELECT 'ACTIVE',
+       'admin@bookshop.com',
+       CURRENT_DATE,
+       p.id,
+       'admin',
+       '$2a$12$JlAjNdwgzqXEq/7MGhvft.bJGevcWJrn1ZEqzdTN6sHjeYu5ugj.6',
+       'ADMIN'
+FROM persons p
+WHERE p.last_name = 'Bookshop'
+  AND NOT EXISTS (SELECT 1 FROM users WHERE username = 'admin');
+INSERT INTO users (status, email, registration_date, person_id, username, password, role)
+SELECT 'ACTIVE', 'john@example.com', CURRENT_DATE, p.id, 'john_doe', 'Password1!', 'USER'
 FROM persons p
 WHERE p.first_name = 'John'
   AND NOT EXISTS (SELECT 1 FROM users);
 
-INSERT INTO users (status, email, registration_date, person_id, username, password)
-SELECT 'ACTIVE', 'jane@example.com', CURRENT_DATE, p.id, 'jane_smith', 'Password1!'
+INSERT INTO users (status, email, registration_date, person_id, username, password, role)
+SELECT 'ACTIVE', 'jane@example.com', CURRENT_DATE, p.id, 'jane_smith', 'Password1!', 'USER'
 FROM persons p
 WHERE p.first_name = 'Jane'
   AND NOT EXISTS (SELECT 1 FROM users WHERE username = 'jane_smith');

@@ -1,5 +1,6 @@
 package com.online.bookshop.infrastructure.persistence;
 
+import com.online.bookshop.domain.model.enums.UserRole;
 import com.online.bookshop.domain.model.enums.UserStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -29,6 +30,12 @@ public class UserEntity {
     @Column(name = "status", length = 20, nullable = false)
     private UserStatus status;
 
+    @Getter
+    @Setter
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+
+    private UserRole role;
     @Setter
     @Getter
     @Email

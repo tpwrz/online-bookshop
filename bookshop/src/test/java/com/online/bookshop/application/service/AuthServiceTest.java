@@ -7,6 +7,7 @@ import com.online.bookshop.api.dto.AuthDtos.RegisterRequest;
 import com.online.bookshop.api.security.JwtService;
 import com.online.bookshop.domain.model.RefreshToken;
 import com.online.bookshop.domain.model.User;
+import com.online.bookshop.domain.model.enums.UserRole;
 import com.online.bookshop.domain.model.enums.UserStatus;
 import com.online.bookshop.domain.repository.RefreshTokenRepository;
 import com.online.bookshop.domain.repository.UserRepository;
@@ -20,6 +21,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -59,8 +62,6 @@ class AuthServiceTest {
         ReflectionTestUtils.setField(authService, "refreshTokenExpirationDays", 7L);
     }
 
-    // ===================== REGISTER =====================
-
     @Test
     @DisplayName("register: успешная регистрация возвращает токены")
     void register_success() {
@@ -85,17 +86,16 @@ class AuthServiceTest {
         when(jwtService.generateRefreshToken()).thenReturn("refresh-token");
         when(refreshTokenRepository.save(any(RefreshToken.class))).thenAnswer(i -> i.getArgument(0));
 
-        AuthResponse response = authService.register(request);
+        ResponseEntity<String> response = authService.register(request);
 
-        assertThat(response.accessToken()).isEqualTo("access-token");
-        assertThat(response.refreshToken()).isEqualTo("refresh-token");
-        assertThat(response.tokenType()).isEqualTo("Bearer");
-        assertThat(response.expiresIn()).isEqualTo(900L);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEqualTo("OK");
 
         verify(userRepository).save(argThat(u ->
                 u.getUsername().equals("testuser") &&
                         u.getPassword().equals("$2a$12$hashed") &&
-                        u.getStatus() == UserStatus.ACTIVE
+                        u.getStatus() == UserStatus.ACTIVE &&
+                        u.getRole() == UserRole.USER          // NEW
         ));
     }
 
@@ -166,8 +166,6 @@ class AuthServiceTest {
         assertThat(capturedPerson.getBirthDate().toString()).isEqualTo("1990-06-15");
     }
 
-    // ===================== LOGIN =====================
-
     @Test
     @DisplayName("login: успешный логин возвращает токены и отзывает старые refresh tokens")
     void login_success() {
@@ -204,8 +202,6 @@ class AuthServiceTest {
 
         verify(userRepository, never()).findByUsername(any());
     }
-
-    // ===================== REFRESH =====================
 
     @Test
     @DisplayName("refresh: валидный токен — возвращает новую пару токенов")
@@ -293,8 +289,6 @@ class AuthServiceTest {
         verify(refreshTokenRepository).revokeAllByUserId(1L);
     }
 
-    // ===================== LOGOUT =====================
-
     @Test
     @DisplayName("logout: валидный токен — отзывает все токены пользователя")
     void logout_success() {
@@ -318,5 +312,35 @@ class AuthServiceTest {
         assertThatCode(() -> authService.logout("unknown")).doesNotThrowAnyException();
 
         verify(refreshTokenRepository, never()).revokeAllByUserId(any());
+    }
+
+    @Test
+    @DisplayName("register: новый пользователь получает роль USER")
+    void register_assignsRoleUser() {
+        RegisterRequest request = new RegisterRequest(
+                "testuser", "test@example.com", "Password123!",
+                "Test", "User", "2000-01-01");
+
+        when(userRepository.existsByUsername(any())).thenReturn(false);
+        when(userRepository.existsByEmail(any())).thenReturn(false);
+        when(passwordEncoder.encode(any())).thenReturn("hashed");
+
+        PersonEntity savedPerson = new PersonEntity();
+        savedPerson.setId(1L);
+        when(personJpaRepository.save(any())).thenReturn(savedPerson);
+
+        User savedUser = new User();
+        savedUser.setId(1L);
+        savedUser.setUsername("testuser");
+        when(userRepository.save(any())).thenReturn(savedUser);
+        when(jwtService.generateAccessToken(any(), any())).thenReturn("at");
+        when(jwtService.generateRefreshToken()).thenReturn("rt");
+        when(refreshTokenRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        authService.register(request);
+
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(userCaptor.capture());
+        assertThat(userCaptor.getValue().getRole()).isEqualTo(UserRole.USER);
     }
 }

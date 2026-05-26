@@ -25,25 +25,25 @@ class AuthControllerTest {
     @InjectMocks
     private AuthController controller;
 
-    // ------------------------------------------------------------ register
-
     @Nested
     @DisplayName("POST /api/auth/register")
     class Register {
 
         @Test
-        @DisplayName("returns 200 with tokens on success")
-        void returnsTokensOnSuccess() {
+        @DisplayName("returns 200 with OK on success")
+        void returnsOkOnSuccess() {
             RegisterRequest request = new RegisterRequest(
                     "user", "user@example.com", "Pass123!",
-                    "John", "Doe", "2000-01-01");
-            when(authService.register(request)).thenReturn(authResponse);
+                    "John", "Doe", "2000-01-01"
+            );
 
-            ResponseEntity<AuthResponse> response = controller.register(request);
+            when(authService.register(request))
+                    .thenReturn(ResponseEntity.ok("OK"));
+
+            ResponseEntity<String> response = controller.register(request);
 
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-            assertThat(response.getBody().accessToken()).isEqualTo("access-token");
-            assertThat(response.getBody().tokenType()).isEqualTo("Bearer");
+            assertThat(response.getBody()).isEqualTo("OK");
         }
 
         @Test
@@ -52,15 +52,13 @@ class AuthControllerTest {
             RegisterRequest request = new RegisterRequest(
                     "user", "user@example.com", "Pass123!",
                     "John", "Doe", "2000-01-01");
-            when(authService.register(request)).thenReturn(authResponse);
+            when(authService.register(request)).thenReturn(ResponseEntity.ok("OK"));
 
             controller.register(request);
 
             verify(authService, times(1)).register(request);
         }
     }
-
-    // --------------------------------------------------------------- login
 
     @Nested
     @DisplayName("POST /api/auth/login")
@@ -91,8 +89,6 @@ class AuthControllerTest {
         }
     }
 
-    // ------------------------------------------------------------- refresh
-
     @Nested
     @DisplayName("POST /api/auth/refresh")
     class Refresh {
@@ -111,8 +107,6 @@ class AuthControllerTest {
             assertThat(response.getBody().refreshToken()).isEqualTo("new-refresh");
         }
     }
-
-    // -------------------------------------------------------------- logout
 
     @Nested
     @DisplayName("POST /api/auth/logout")

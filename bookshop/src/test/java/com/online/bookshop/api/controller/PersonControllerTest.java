@@ -38,8 +38,6 @@ class PersonControllerTest {
                 "test", "12345567", LocalDate.of(2020, 2, 2));
     }
 
-    // ---------------------------------------------------------------- getAll
-
     @Nested
     @DisplayName("GET /persons")
     class GetAll {
@@ -65,8 +63,6 @@ class PersonControllerTest {
         }
     }
 
-    // --------------------------------------------------------------- getById
-
     @Nested
     @DisplayName("GET /persons/{id}")
     class GetById {
@@ -90,8 +86,6 @@ class PersonControllerTest {
             assertThat(controller.getById(99L).getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         }
     }
-
-    // --------------------------------------------------------- getByLastName
 
     @Nested
     @DisplayName("GET /persons/search")
@@ -118,8 +112,6 @@ class PersonControllerTest {
         }
     }
 
-    // ---------------------------------------------------------------- create
-
     @Nested
     @DisplayName("POST /persons")
     class Create {
@@ -140,8 +132,6 @@ class PersonControllerTest {
         }
     }
 
-    // ---------------------------------------------------------------- update
-
     @Nested
     @DisplayName("PUT /persons/{id}")
     class Update {
@@ -160,8 +150,6 @@ class PersonControllerTest {
             verify(service).save(argThat(p -> p.getId().equals(1L)));
         }
     }
-
-    // ---------------------------------------------------------------- delete
 
     @Nested
     @DisplayName("DELETE /persons/{id}")

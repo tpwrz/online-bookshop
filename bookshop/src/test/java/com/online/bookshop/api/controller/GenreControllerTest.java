@@ -37,8 +37,6 @@ class GenreControllerTest {
         genre = new Genre(1L, "Science Fiction");
     }
 
-    // ---------------------------------------------------------------- getAll
-
     @Nested
     @DisplayName("GET /genres")
     class GetAll {
@@ -66,8 +64,6 @@ class GenreControllerTest {
             assertThat(response.getBody()).isEmpty();
         }
     }
-
-    // --------------------------------------------------------------- getById
 
     @Nested
     @DisplayName("GET /genres/{id}")
@@ -97,8 +93,6 @@ class GenreControllerTest {
         }
     }
 
-    // --------------------------------------------------------- getByLastName
-
     @Nested
     @DisplayName("GET /genres/search")
     class GetByLastName {
@@ -127,8 +121,6 @@ class GenreControllerTest {
         }
     }
 
-    // ---------------------------------------------------------------- create
-
     @Nested
     @DisplayName("POST /genres")
     class Create {
@@ -149,8 +141,6 @@ class GenreControllerTest {
         }
     }
 
-    // ---------------------------------------------------------------- update
-
     @Nested
     @DisplayName("PUT /genres/{id}")
     class Update {
@@ -167,12 +157,9 @@ class GenreControllerTest {
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
             assertThat(response.getBody().getId()).isEqualTo(1L);
             assertThat(response.getBody().getName()).isEqualTo("Updated Name");
-            // проверяем что id был проставлен перед save
             verify(service).save(argThat(g -> g.getId().equals(1L)));
         }
     }
-
-    // ---------------------------------------------------------------- delete
 
     @Nested
     @DisplayName("DELETE /genres/{id}")

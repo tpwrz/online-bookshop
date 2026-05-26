@@ -42,8 +42,6 @@ class OrderControllerTest {
         );
     }
 
-    // ---------------------------------------------------------------- getAll
-
     @Nested
     @DisplayName("GET /orders")
     class GetAll {
@@ -67,8 +65,6 @@ class OrderControllerTest {
             assertThat(controller.getAllOrders().getBody()).isEmpty();
         }
     }
-
-    // --------------------------------------------------------------- getById
 
     @Nested
     @DisplayName("GET /orders/{id}")
@@ -94,8 +90,6 @@ class OrderControllerTest {
         }
     }
 
-    // ---------------------------------------------------------------- create
-
     @Nested
     @DisplayName("POST /orders")
     class Create {
@@ -115,8 +109,6 @@ class OrderControllerTest {
         }
     }
 
-    // ---------------------------------------------------------------- update
-
     @Nested
     @DisplayName("PUT /orders/{id}")
     class Update {
@@ -134,8 +126,6 @@ class OrderControllerTest {
         }
     }
 
-    // ---------------------------------------------------------------- delete
-
     @Nested
     @DisplayName("DELETE /orders/{id}")
     class Delete {
@@ -151,8 +141,6 @@ class OrderControllerTest {
             verify(service).deleteById(1L);
         }
     }
-
-    // ------------------------------------------------------------ byUser
 
     @Nested
     @DisplayName("GET /orders/byUser/{userId}")

@@ -7,6 +7,7 @@ import com.online.bookshop.api.dto.AuthDtos.RegisterRequest;
 import com.online.bookshop.api.security.JwtService;
 import com.online.bookshop.domain.model.RefreshToken;
 import com.online.bookshop.domain.model.User;
+import com.online.bookshop.domain.model.enums.UserRole;
 import com.online.bookshop.domain.model.enums.UserStatus;
 import com.online.bookshop.domain.repository.RefreshTokenRepository;
 import com.online.bookshop.domain.repository.UserRepository;
@@ -15,6 +16,7 @@ import com.online.bookshop.infrastructure.repository.JpaPersonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,7 +44,7 @@ public class AuthService {
     private long refreshTokenExpirationDays;
 
     @Transactional
-    public AuthResponse register(RegisterRequest request) {
+    public ResponseEntity<String> register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.username())) {
             throw new IllegalArgumentException("Username already taken: " + request.username());
         }
@@ -61,13 +63,14 @@ public class AuthService {
         user.setEmail(request.email());
         user.setPassword(passwordEncoder.encode(request.password()));
         user.setStatus(UserStatus.ACTIVE);
+        user.setRole(UserRole.USER);
         user.setRegistrationDate(LocalDate.now());
         user.setPersonId(person.getId());
 
         User saved = userRepository.save(user);
         log.info("Registered new user: {}", saved.getUsername());
 
-        return issueTokenPair(saved);
+        return ResponseEntity.ok("OK");
     }
 
     @Transactional

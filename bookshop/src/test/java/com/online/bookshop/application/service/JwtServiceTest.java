@@ -25,8 +25,6 @@ class JwtServiceTest {
         jwtService = new JwtService(SECRET, EXPIRATION_MS);
     }
 
-    // ===================== generateAccessToken =====================
-
     @Test
     @DisplayName("generateAccessToken: возвращает непустой токен")
     void generateAccessToken_notEmpty() {
@@ -47,8 +45,6 @@ class JwtServiceTest {
         String token = jwtService.generateAccessToken("testuser", 42L);
         assertThat(jwtService.extractUserId(token)).isEqualTo(42L);
     }
-
-    // ===================== validateAccessToken =====================
 
     @Test
     @DisplayName("validateAccessToken: валидный токен возвращает true")
@@ -113,8 +109,6 @@ class JwtServiceTest {
 
         assertThat(jwtService.validateAccessToken(tokenWithoutType)).isFalse();
     }
-
-    // ===================== generateRefreshToken =====================
 
     @Test
     @DisplayName("generateRefreshToken: возвращает непустой UUID-like токен")

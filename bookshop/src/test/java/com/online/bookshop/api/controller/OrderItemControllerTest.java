@@ -36,8 +36,6 @@ class OrderItemControllerTest {
         item = new OrderItem(1L, 1L, 1L, 2, 9.99);
     }
 
-    // ---------------------------------------------------------------- getAll
-
     @Nested
     @DisplayName("GET /order-items")
     class GetAll {
@@ -61,8 +59,6 @@ class OrderItemControllerTest {
             assertThat(controller.getAll()).isEmpty();
         }
     }
-
-    // --------------------------------------------------------------- getById
 
     @Nested
     @DisplayName("GET /order-items/{id}")
@@ -88,8 +84,6 @@ class OrderItemControllerTest {
         }
     }
 
-    // ---------------------------------------------------------------- create
-
     @Nested
     @DisplayName("POST /order-items")
     class Create {
@@ -108,8 +102,6 @@ class OrderItemControllerTest {
             verify(service).save(input);
         }
     }
-
-    // ---------------------------------------------------------------- update
 
     @Nested
     @DisplayName("PUT /order-items/{id}")
@@ -140,8 +132,6 @@ class OrderItemControllerTest {
         }
     }
 
-    // ---------------------------------------------------------------- delete
-
     @Nested
     @DisplayName("DELETE /order-items/{id}")
     class Delete {
@@ -157,8 +147,6 @@ class OrderItemControllerTest {
             verify(service).deleteById(1L);
         }
     }
-
-    // --------------------------------------------------------- byOrderId
 
     @Nested
     @DisplayName("GET /order-items/order/{orderId}")

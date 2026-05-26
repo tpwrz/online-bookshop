@@ -1,6 +1,7 @@
 package com.online.bookshop.infrastructure.mapper;
 
 import com.online.bookshop.domain.model.User;
+import com.online.bookshop.domain.model.enums.UserRole;
 import com.online.bookshop.infrastructure.persistence.UserEntity;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ public class UserMapper {
         User domain = new User();
         domain.setId(entity.getId());
         domain.setStatus(entity.getStatus());
+        domain.setRole(entity.getRole());
         domain.setEmail(entity.getEmail());
         domain.setUsername(entity.getUsername());
         domain.setPassword(entity.getPassword());
@@ -44,6 +46,7 @@ public class UserMapper {
         UserEntity entity = new UserEntity();
         if (domain.getId() != null) entity.setId(domain.getId());
         entity.setStatus(domain.getStatus());
+        entity.setRole(domain.getRole() != null ? domain.getRole() : UserRole.USER);
         entity.setEmail(domain.getEmail());
         entity.setUsername(domain.getUsername());
         entity.setPassword(domain.getPassword());
