@@ -37,7 +37,6 @@ class UserControllerTest {
     private UserController userController;
 
     private User testUser;
-    private User adminUser;
 
     @BeforeEach
     void setUp() {
@@ -49,7 +48,7 @@ class UserControllerTest {
         testUser.setRole(UserRole.USER);
         testUser.setRegistrationDate(LocalDate.of(2024, 1, 1));
 
-        adminUser = new User();
+        User adminUser = new User();
         adminUser.setId(99L);
         adminUser.setUsername("admin");
         adminUser.setEmail("admin@bookshop.com");
