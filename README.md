@@ -71,17 +71,17 @@ Full request/response schemas are available in Swagger UI.
 
 ## Domain Model
 
-**Book** — title, author, genre, language, price, currency, availability, page count, average rating, reviews
+**Book** - title, author, genre, language, price, currency, availability, page count, average rating, reviews
 
-**User** — username, email, status, registration date, linked to a Person
+**User** - username, email, status, registration date, linked to a Person
 
-**Person** — first name, middle name, last name, address, phone, birth date
+**Person** - first name, middle name, last name, address, phone, birth date
 
-**Order** — ship address, date, status (`NEW → COORDINATED → INDELIVERY → DELIVERED`), user, items
+**Order** - ship address, date, status (`NEW → COORDINATED → INDELIVERY → DELIVERED`), user, items
 
-**OrderItem** — book, quantity, unit price, linked to an order
+**OrderItem** - book, quantity, unit price, linked to an order
 
-**Review** — user, book, message, rating (1–5)
+**Review** - user, book, message, rating (1–5)
 
 ## Testing
 
@@ -100,7 +100,7 @@ Controller tests verify HTTP status codes (200, 201, 204, 400, 401, 403, 404, 40
 
 ## Status
 
-> **In active development** — core CRUD and auth are implemented; cart and advanced filtering are planned.
+> **In active development** - core CRUD and auth are implemented; cart and advanced filtering are planned.
 
 ## License
 
